@@ -244,15 +244,36 @@ btnLoan.addEventListener('click', function (e) {
 
 // console.log(arrayNew);
 
-const divs = document.querySelectorAll('div');
+// const divs = document.querySelectorAll('div');
 
-const arr = Array.from(divs);
+// const arr = Array.from(divs);
 
-console.log(arr);
+// console.log(arr);
 
-const texts = arr.map(div => div.innerText);
+// const texts = arr.map(div => div.innerText);
 
-console.log(texts);
+// console.log(texts);
+
+const sumDepositWithdraw = accounts.flatMap(acc => acc.movements);
+
+// console.log(sumDepositWithdraw);
+
+// const overallObject = sumDepositWithdraw.reduce((acc, cur, index) => {
+//   cur > 0
+//     ? (acc['Deposit'] = (acc['Deposit'] || 0) + cur)
+//     : (acc['Withdraw'] = (acc['Withdraw'] || 0) + cur);
+//   return acc;
+// }, {});
+
+// console.log(overallObject);
+
+const overallObject = sumDepositWithdraw.reduce((acc, cur, index) => {
+  const key = cur > 0 ? 'Deposit' : 'Withdraw';
+  acc[key] = (acc[key] || 0) + cur;
+  return acc;
+}, {});
+
+console.log(overallObject);
 
 ///////////////////////////////////////
 // Coding Challenge #4
