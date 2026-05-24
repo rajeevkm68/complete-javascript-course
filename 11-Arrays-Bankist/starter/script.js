@@ -267,13 +267,41 @@ const sumDepositWithdraw = accounts.flatMap(acc => acc.movements);
 
 // console.log(overallObject);
 
-const overallObject = sumDepositWithdraw.reduce((acc, cur, index) => {
-  const key = cur > 0 ? 'Deposit' : 'Withdraw';
-  acc[key] = (acc[key] || 0) + cur;
-  return acc;
-}, {});
+// const { deposite, withdraw } = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce(
+//     (acc, cur) => {
+//       acc[cur > 0 ? 'deposite' : 'withdraw'] += cur;
+//       return acc;
+//     },
+//     { deposite: 0, withdraw: 0 },
+//   );
+// console.log(deposite, withdraw);
 
-console.log(overallObject);
+// const deposits = accounts
+//   .flatMap(acc => acc.movements)
+//   .reduce((acc, cur) => {
+//     if (cur > 0) acc.push(cur);
+//     return acc;
+//   }, []);
+
+// console.log(deposits);
+
+//Convert Title to Case
+
+const myString = 'the quick brown fox a jumped over the lazy dog';
+
+const convertToTitle = function (str) {
+  let words = str.split(' ');
+  words.forEach((cur, index, arr) => {
+    if (cur.length > 1) {
+      arr[index] = cur[0].toUpperCase() + cur.slice(1);
+    }
+  });
+  return words.join(' ');
+};
+
+console.log(convertToTitle(myString));
 
 ///////////////////////////////////////
 // Coding Challenge #4
