@@ -259,6 +259,20 @@ const texts = arr.map(div => div.innerText);
 
 console.log(texts);
 
+const myString = 'The Quick Brown Fox jumped over the lazy dog';
+
+const titleCase = function (str) {
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(x =>
+      x.length <= 1 ? x.toUpperCase() : x[0].toUpperCase() + x.slice(1),
+    )
+    .join(' ');
+};
+
+console.log(titleCase(myString));
+
 ///////////////////////////////////////
 // Coding Challenge #4
 
