@@ -249,11 +249,15 @@ const numDeposits = accounts
 
 console.log(numDeposits);
 
-const numDep = accounts
-  .flatMap(acc => acc.movements)
-  .reduce((count, cur) => (cur >= 1000 ? count + 1 : count), 0);
+const divs = document.querySelectorAll('div');
 
-console.log(numDep);
+const arr = Array.from(divs);
+
+console.log(arr);
+
+const texts = arr.map(div => div.innerText);
+
+console.log(texts);
 
 ///////////////////////////////////////
 // Coding Challenge #4
