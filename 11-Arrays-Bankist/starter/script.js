@@ -236,23 +236,24 @@ btnLoan.addEventListener('click', function (e) {
   updateUI(currentAccount);
 });
 
-// const array = Array.from({ length: 5 }, (curr, i) => i + 1);
+const bankDepositSumArr = accounts
+  .flatMap(acc => acc.movements)
+  .filter(mov => mov > 0)
+  .reduce((amount, val) => amount + val, 0);
 
-// console.log(array);
+console.log(bankDepositSumArr);
 
-// const arrayNew = Array.from({ length: 5 }).map(() => 1);
+const numDeposits = accounts
+  .flatMap(acc => acc.movements)
+  .filter(amt => amt >= 1000);
 
-// console.log(arrayNew);
+console.log(numDeposits);
 
-const divs = document.querySelectorAll('div');
+const numDep = accounts
+  .flatMap(acc => acc.movements)
+  .reduce((count, cur) => (cur >= 1000 ? count + 1 : count), 0);
 
-const arr = Array.from(divs);
-
-console.log(arr);
-
-const texts = arr.map(div => div.innerText);
-
-console.log(texts);
+console.log(numDep);
 
 ///////////////////////////////////////
 // Coding Challenge #4
