@@ -622,9 +622,13 @@ const dogs = [
   { weight: 32, curFood: 340, owners: ['Michael'] },
 ];
 dogs.forEach(val => {
-  const foodReco = Math.round(val.weight ** 0.75 * 28);
+  const foodReco = Math.floor(val.weight ** 0.75 * 28);
   val.recommendedFood = foodReco;
 });
+
+const sarahDog = dogs.find(cur => cur.owners.includes('Sarah'));
+
+console.log(sarahDog);
 
 const ownersTooMuch = [];
 const constownersTooLittle = [];
@@ -687,6 +691,8 @@ const numOwners = Object.groupBy(dogs, curDog => {
 
 console.log(numOwners);
 
-const sortedArray = dogs.toSorted();
+const sortedArray = dogs.toSorted(
+  (a, b) => a.recommendedFood - b.recommendedFood,
+);
 
 console.log(sortedArray);
