@@ -84,14 +84,18 @@ const inputClosePin = document.querySelector('.form__input--pin');
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort
-    ? acc.movements.slice().sort((a, b) => a - b)
-    : acc.movements;
+  const combinedMovsDates = acc.movements.map((cur, i) => ({
+    movement: cur,
+    movementDate: acc.movementsDates[i],
+  }));
 
-  movs.forEach(function (mov, i) {
-    const type = mov > 0 ? 'deposit' : 'withdrawal';
+  if (sort) combinedMovsDates.sort((a, b) => a.movement - b.movement);
 
-    const date = new Date(acc.movementsDates[i]);
+  combinedMovsDates.forEach(function (obj, i) {
+    const { movement, movementDate } = obj;
+    const type = movement > 0 ? 'deposit' : 'withdrawal';
+
+    const date = new Date(movementDate);
     const newDay = String(date.getDate()).padStart(2, '0');
     const newMonth = String(date.getMonth() + 1).padStart(2, '0');
     const newYear = date.getFullYear();
@@ -103,7 +107,7 @@ const displayMovements = function (acc, sort = false) {
           i + 1
         } ${type}</div>
         <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${mov.toFixed(2)}€</div>
+        <div class="movements__value">${movement.toFixed(2)}€</div>
       </div>
     `;
 
@@ -219,6 +223,8 @@ btnTransfer.addEventListener('click', function (e) {
     // Doing the transfer
     currentAccount.movements.push(-amount);
     receiverAcc.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
+    receiverAcc.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
