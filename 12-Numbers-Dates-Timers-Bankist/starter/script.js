@@ -81,19 +81,28 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const displayMovements = function (movements, sort = false) {
+const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
-  const movs = sort ? movements.slice().sort((a, b) => a - b) : movements;
+  const movs = sort
+    ? acc.movements.slice().sort((a, b) => a - b)
+    : acc.movements;
 
   movs.forEach(function (mov, i) {
     const type = mov > 0 ? 'deposit' : 'withdrawal';
+
+    const date = new Date(acc.movementsDates[i]);
+    const newDay = String(date.getDate()).padStart(2, '0');
+    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
+    const newYear = date.getFullYear();
+    const displayDate = `${newDay}/${newMonth}/${newYear}`;
 
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
           i + 1
         } ${type}</div>
+        <div class="movements__date">${displayDate}</div>
         <div class="movements__value">${mov.toFixed(2)}€</div>
       </div>
     `;
@@ -142,7 +151,7 @@ createUsernames(accounts);
 
 const updateUI = function (acc) {
   // Display movements
-  displayMovements(acc.movements);
+  displayMovements(acc);
 
   // Display balance
   calcDisplayBalance(acc);
@@ -162,7 +171,6 @@ btnLogin.addEventListener('click', function (e) {
   currentAccount = accounts.find(
     acc => acc.username === inputLoginUsername.value,
   );
-  console.log(currentAccount);
 
   if (currentAccount?.pin === +inputLoginPin.value) {
     // Display UI and message
@@ -170,6 +178,20 @@ btnLogin.addEventListener('click', function (e) {
       currentAccount.owner.split(' ')[0]
     }`;
     containerApp.style.opacity = 100;
+
+    //CUrrent Date
+
+    const today = new Date();
+
+    const newDay = String(today.getDate()).padStart(2, '0');
+    const newMonth = String(today.getMonth() + 1).padStart(2, '0');
+    const newYear = today.getFullYear();
+    const newHours = String(today.getHours()).padStart(2, '0');
+    const newMin = String(today.getMinutes()).padStart(2, '0');
+
+    const curDate = `${newDay}/${newMonth}/${newYear}, ${newHours}:${newMin}`;
+
+    labelDate.textContent = curDate;
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -211,6 +233,7 @@ btnLoan.addEventListener('click', function (e) {
   if (amount > 0 && currentAccount.movements.some(mov => mov >= amount * 0.1)) {
     // Add movement
     currentAccount.movements.push(amount);
+    currentAccount.movementsDates.push(new Date().toISOString());
 
     // Update UI
     updateUI(currentAccount);
@@ -244,23 +267,58 @@ btnClose.addEventListener('click', function (e) {
 let sorted = false;
 btnSort.addEventListener('click', function (e) {
   e.preventDefault();
-  displayMovements(currentAccount.movements, !sorted);
+  displayMovements(currentAccount, !sorted);
   sorted = !sorted;
 });
+
+currentAccount = account2;
+updateUI(currentAccount);
+containerApp.style.opacity = 100;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 // LECTURES
 
-const circumference = r =>
-  Number.isNaN(Number.parseFloat(r))
-    ? 0
-    : Math.floor(Number.parseFloat(r) * 2.0 * Math.PI);
+// const circumference = r =>
+//   Number.isNaN(Number.parseFloat(r))
+//     ? 0
+//     : Math.floor(Number.parseFloat(r) * 2.0 * Math.PI);
 
-console.log(circumference('4.567abcdefgh'));
+// console.log(circumference('4.567abcdefgh'));
 
-console.log(circumference('abcdefgh'));
+// console.log(circumference('abcdefgh'));
 
-const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+// const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
-console.log(randInt(10, 50));
+// console.log(randInt(10, 50));
+
+// const days = [
+//   'Sunday',
+//   'Monday',
+//   'Tuesday',
+//   'Wednesday',
+//   'Thursday',
+//   'Friday',
+//   'Saturday',
+// ];
+
+// const dateToday = new Date(account1.movementsDates[0]);
+// console.log(dateToday.getDate());
+// console.log(days[dateToday.getDay()]);
+// console.log(dateToday.getMilliseconds());
+
+// const transDays = account2.movementsDates.map(d => days[new Date(d).getDay()]);
+
+// console.log(transDays);
+
+// const today = new Date();
+
+// const newDay = String(today.getDate()).padStart(2, '0');
+// const newMonth = String(today.getMonth() + 1).padStart(2, '0');
+// const newYear = today.getFullYear();
+// const newHours = today.getHours();
+// const newMin = today.getMinutes();
+
+// const todayDate = `${newDay}/${newMonth}/${newYear} ${newHours}:${newMin}`;
+
+// console.log(todayDate);
