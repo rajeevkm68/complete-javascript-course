@@ -22,8 +22,8 @@ const account1 = {
     '2020-04-01T10:17:24.185Z',
     '2020-05-08T14:11:59.604Z',
     '2020-05-27T17:01:17.194Z',
-    '2020-07-11T23:36:17.929Z',
-    '2020-07-12T10:51:36.790Z',
+    '2026-05-29T23:36:17.929Z',
+    '2026-05-30T10:51:36.790Z',
   ],
   currency: 'EUR',
   locale: 'pt-PT', // de-DE
@@ -42,8 +42,8 @@ const account2 = {
     '2020-01-25T14:18:46.235Z',
     '2020-02-05T16:33:06.386Z',
     '2020-04-10T14:43:26.374Z',
-    '2020-06-25T18:49:59.371Z',
-    '2020-07-26T12:01:20.894Z',
+    '2026-05-29T18:49:59.371Z',
+    '2026-05-30T12:01:20.894Z',
   ],
   currency: 'USD',
   locale: 'en-US',
@@ -81,6 +81,23 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
+const formatMovementDate = function (date) {
+  const calcDayPassed = (date1, date2) =>
+    Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+
+  const daysPassed = calcDayPassed(new Date(), date);
+
+  if (daysPassed === 0) return 'Today';
+  if (daysPassed === 1) return 'Yesterday';
+  if (daysPassed <= 7) return `${daysPassed} days ago`;
+
+  const newDay = String(date.getDate()).padStart(2, '0');
+  const newMonth = String(date.getMonth() + 1).padStart(2, '0');
+  const newYear = date.getFullYear();
+
+  return `${newDay}/${newMonth}/${newYear}`;
+};
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -96,10 +113,8 @@ const displayMovements = function (acc, sort = false) {
     const type = movement > 0 ? 'deposit' : 'withdrawal';
 
     const date = new Date(movementDate);
-    const newDay = String(date.getDate()).padStart(2, '0');
-    const newMonth = String(date.getMonth() + 1).padStart(2, '0');
-    const newYear = date.getFullYear();
-    const displayDate = `${newDay}/${newMonth}/${newYear}`;
+
+    const displayDate = formatMovementDate(date);
 
     const html = `
       <div class="movements__row">
@@ -328,3 +343,15 @@ containerApp.style.opacity = 100;
 // const todayDate = `${newDay}/${newMonth}/${newYear} ${newHours}:${newMin}`;
 
 // console.log(todayDate);
+
+const date = new Date(currentAccount.movementsDates[0]);
+const today = new Date();
+
+console.log(date, today);
+
+const calcDayPassed = (date1, date2) =>
+  Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+
+const numOfDays = calcDayPassed(today, date);
+
+console.log(`${numOfDays} Ago`);
