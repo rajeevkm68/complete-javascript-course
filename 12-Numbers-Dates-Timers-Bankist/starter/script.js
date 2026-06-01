@@ -94,6 +94,12 @@ const formatMovementDate = function (date, locale) {
   return new Intl.DateTimeFormat(locale).format(date);
 };
 
+const newCurrency = (localCurrency, localLocale, amount) =>
+  new Intl.NumberFormat(localLocale, {
+    style: 'currency',
+    currency: localCurrency,
+  }).format(amount);
+
 const displayMovements = function (acc, sort = false) {
   containerMovements.innerHTML = '';
 
@@ -112,13 +118,15 @@ const displayMovements = function (acc, sort = false) {
 
     const displayDate = formatMovementDate(date, acc.locale);
 
+    const transaction = newCurrency(acc.currency, acc.locale, movement);
+
     const html = `
       <div class="movements__row">
         <div class="movements__type movements__type--${type}">${
           i + 1
         } ${type}</div>
         <div class="movements__date">${displayDate}</div>
-        <div class="movements__value">${movement.toFixed(2)}€</div>
+        <div class="movements__value">${transaction}</div>
       </div>
     `;
 
@@ -128,29 +136,29 @@ const displayMovements = function (acc, sort = false) {
 
 const calcDisplayBalance = function (acc) {
   acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
-  labelBalance.textContent = `${acc.balance.toFixed(2)}€`;
+  const newBal = newCurrency(acc.currency, acc.local, acc.balance);
+  labelBalance.textContent = `${newBal}`;
 };
 
 const calcDisplaySummary = function (acc) {
   const incomes = acc.movements
     .filter(mov => mov > 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumIn.textContent = `${incomes.toFixed(2)}€`;
+  labelSumIn.textContent = newCurrency(acc.currency, acc.local, incomes);
 
   const out = acc.movements
     .filter(mov => mov < 0)
     .reduce((acc, mov) => acc + mov, 0);
-  labelSumOut.textContent = `${Math.abs(out).toFixed(2)}€`;
+  labelSumOut.textContent = newCurrency(acc.currency, acc.local, out);
 
   const interest = acc.movements
     .filter(mov => mov > 0)
     .map(deposit => (deposit * acc.interestRate) / 100)
-    .filter((int, i, arr) => {
-      // console.log(arr);
+    .filter(int => {
       return int >= 1;
     })
     .reduce((acc, int) => acc + int, 0);
-  labelSumInterest.textContent = `${interest.toFixed(2)}€`;
+  labelSumInterest.textContent = newCurrency(acc.currency, acc.local, interest);
 };
 
 const createUsernames = function (accs) {
@@ -342,28 +350,34 @@ containerApp.style.opacity = 100;
 
 // console.log(todayDate);
 
-const date = new Date(currentAccount.movementsDates[0]);
-const today = new Date();
+// const date = new Date(currentAccount.movementsDates[0]);
+// const today = new Date();
 
-console.log(date, today);
+// console.log(date, today);
 
-const calcDayPassed = (date1, date2) =>
-  Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
+// const calcDayPassed = (date1, date2) =>
+//   Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
 
-const numOfDays = calcDayPassed(today, date);
+// const numOfDays = calcDayPassed(today, date);
 
-console.log(`${numOfDays} Ago`);
+// console.log(`${numOfDays} Ago`);
 
-const todayDate = new Date();
-const locale = navigator.language;
+// const todayDate = new Date();
+// const locale = navigator.language;
 
-let options = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-};
+// let options = {
+//   weekday: 'long',
+//   year: 'numeric',
+//   month: 'long',
+//   day: 'numeric',
+// };
 
-labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
-  todayDate,
-);
+// labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
+//   todayDate,
+// );
+
+let number = 34567893.23;
+
+number = new Intl.NumberFormat('en-US').format(number);
+
+console.log(`International Format ${number}`);
