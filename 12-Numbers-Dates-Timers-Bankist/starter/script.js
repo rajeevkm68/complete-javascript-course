@@ -81,7 +81,7 @@ const inputClosePin = document.querySelector('.form__input--pin');
 /////////////////////////////////////////////////
 // Functions
 
-const formatMovementDate = function (date) {
+const formatMovementDate = function (date, locale) {
   const calcDayPassed = (date1, date2) =>
     Math.round(Math.abs(date1 - date2) / (1000 * 60 * 60 * 24));
 
@@ -91,11 +91,7 @@ const formatMovementDate = function (date) {
   if (daysPassed === 1) return 'Yesterday';
   if (daysPassed <= 7) return `${daysPassed} days ago`;
 
-  const newDay = String(date.getDate()).padStart(2, '0');
-  const newMonth = String(date.getMonth() + 1).padStart(2, '0');
-  const newYear = date.getFullYear();
-
-  return `${newDay}/${newMonth}/${newYear}`;
+  return new Intl.DateTimeFormat(locale).format(date);
 };
 
 const displayMovements = function (acc, sort = false) {
@@ -114,7 +110,7 @@ const displayMovements = function (acc, sort = false) {
 
     const date = new Date(movementDate);
 
-    const displayDate = formatMovementDate(date);
+    const displayDate = formatMovementDate(date, acc.locale);
 
     const html = `
       <div class="movements__row">
@@ -200,17 +196,19 @@ btnLogin.addEventListener('click', function (e) {
 
     //CUrrent Date
 
-    const today = new Date();
+    const todayDate = new Date();
+    const locale = currentAccount.locale;
 
-    const newDay = String(today.getDate()).padStart(2, '0');
-    const newMonth = String(today.getMonth() + 1).padStart(2, '0');
-    const newYear = today.getFullYear();
-    const newHours = String(today.getHours()).padStart(2, '0');
-    const newMin = String(today.getMinutes()).padStart(2, '0');
+    let options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
 
-    const curDate = `${newDay}/${newMonth}/${newYear}, ${newHours}:${newMin}`;
-
-    labelDate.textContent = curDate;
+    labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
+      todayDate,
+    );
 
     // Clear input fields
     inputLoginUsername.value = inputLoginPin.value = '';
@@ -355,3 +353,17 @@ const calcDayPassed = (date1, date2) =>
 const numOfDays = calcDayPassed(today, date);
 
 console.log(`${numOfDays} Ago`);
+
+const todayDate = new Date();
+const locale = navigator.language;
+
+let options = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+};
+
+labelDate.textContent = new Intl.DateTimeFormat(locale, options).format(
+  todayDate,
+);
