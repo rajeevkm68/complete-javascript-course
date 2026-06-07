@@ -144,12 +144,29 @@ navLink.addEventListener('click', function (e) {
 //   this.style.backgroundColor = randomColor();
 // });
 
-const h1 = document.querySelector('h1');
+// const h1 = document.querySelector('h1');
 
-console.log(h1);
+// console.log(h1);
 
-const childNode = h1.querySelectorAll('.highlight');
+// const childNode = h1.querySelectorAll('.highlight');
 
-console.log(childNode);
+// console.log(childNode);
 
-console.log(h1.childNodes);
+// console.log(h1.childNodes);
+
+// h1.closest('.nav').style.background = 'var( --gradient-secondary)';
+
+// // h1.style.background = 'var( --gradient-secondary)';
+
+/////////////////////////////////////////////////////
+// Tab Components
+
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+  const clicked = e.target.parentElement;
+
+  console.log(clicked);
+});
