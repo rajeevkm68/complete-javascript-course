@@ -166,7 +166,15 @@ const tabsContainer = document.querySelector('.operations__tab-container');
 const tabsContent = document.querySelectorAll('.operations__content');
 
 tabsContainer.addEventListener('click', function (e) {
-  const clicked = e.target.parentElement;
+  const clicked = e.target.closest('.operations__tab');
 
-  console.log(clicked);
+  tabs.forEach(el => el.classList.remove('operations__tab--active'));
+  clicked.classList.add('operations__tab--active');
+  const tab = clicked.dataset.tab;
+  const className = 'operations__content--' + tab;
+
+  tabsContent.forEach(el => el.classList.remove('operations__content--active'));
+  const content = document.querySelector(`.${className}`);
+
+  content.classList.add('operations__content--active');
 });
