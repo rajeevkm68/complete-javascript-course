@@ -336,7 +336,7 @@ const nextSlide = function () {
 
 const prevSlide = function () {
   if (currentSlide === 0) {
-    currentSlide = maxSlide - 1;
+    currentSlide = 0;
   } else {
     currentSlide--;
   }
