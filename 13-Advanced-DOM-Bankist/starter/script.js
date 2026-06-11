@@ -272,7 +272,7 @@ const sectionObserver = new IntersectionObserver(revealSections, secOptions);
 
 allSections.forEach(function (section) {
   sectionObserver.observe(section);
-  section.classList.add('section--hidden');
+  // section.classList.add('section--hidden');
 });
 
 // Lazy Loading Images
@@ -305,3 +305,43 @@ const featureObserver = new IntersectionObserver(
 );
 
 lazyImages.forEach(feature => featureObserver.observe(feature));
+
+// Slider
+
+const slides = document.querySelectorAll('.slide');
+
+const buttonLeft = document.querySelector('.slider__btn--left');
+const buttonRight = document.querySelector('.slider__btn--right');
+
+let currentSlide = 0;
+const maxSlide = slides.length;
+
+const goToSlide = function (slide) {
+  console.log(slide);
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${(i - slide) * 100}%)`),
+  );
+};
+
+goToSlide(0);
+
+const nextSlide = function () {
+  if (currentSlide === maxSlide - 1) {
+    currentSlide = 0;
+  } else {
+    currentSlide++;
+  }
+  goToSlide(currentSlide);
+};
+
+const prevSlide = function () {
+  if (currentSlide === 0) {
+    currentSlide = maxSlide - 1;
+  } else {
+    currentSlide--;
+  }
+  goToSlide(currentSlide);
+};
+
+buttonRight.addEventListener('click', nextSlide);
+buttonLeft.addEventListener('click', prevSlide);
