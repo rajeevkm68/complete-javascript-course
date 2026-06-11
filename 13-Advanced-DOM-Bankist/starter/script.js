@@ -295,7 +295,8 @@ const revealFeatures = function (entries, observer) {
 
 const featureOptions = {
   root: null,
-  threshold: 1,
+  threshold: 0,
+  rootMargin: '+200px',
 };
 
 const featureObserver = new IntersectionObserver(
